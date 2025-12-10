@@ -53,10 +53,17 @@ def get_loaders(data_root: Path, batch_size: int) -> tuple[DataLoader, DataLoade
     return train_loader, test_loader
 
 
-def train_epoch(model: nn.Module, loader: Iterable, criterion: nn.Module, optimizer: torch.optim.Optimizer, device: torch.device) -> float:
+def train_epoch(
+    model: nn.Module,
+    loader: Iterable[tuple[torch.Tensor, torch.Tensor]],
+    criterion: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    device: torch.device,
+) -> float:
     """Train for a single epoch and return average loss."""
     model.train()
     total_loss = 0.0
+    total_samples = 0
     for images, labels in loader:
         images, labels = images.to(device), labels.to(device)
         optimizer.zero_grad()
@@ -65,10 +72,11 @@ def train_epoch(model: nn.Module, loader: Iterable, criterion: nn.Module, optimi
         loss.backward()
         optimizer.step()
         total_loss += loss.item() * images.size(0)
-    return total_loss / len(loader.dataset)
+        total_samples += images.size(0)
+    return total_loss / max(total_samples, 1)
 
 
-def evaluate(model: nn.Module, loader: Iterable, device: torch.device) -> float:
+def evaluate(model: nn.Module, loader: Iterable[tuple[torch.Tensor, torch.Tensor]], device: torch.device) -> float:
     """Evaluate accuracy on a dataloader."""
     model.eval()
     correct = 0
