@@ -64,6 +64,12 @@ To train a CNN model on the MNIST dataset for 100 [epochs](https://www.ultralyti
         yolo classify train data=mnist model=yolo11n-cls.pt epochs=100 imgsz=28
         ```
 
+For a minimal pure PyTorch approach, run the example CNN script included in this repository:
+
+```bash
+python examples/mnist_cnn.py --epochs 3 --batch-size 128
+```
+
 ## Sample Images and Annotations
 
 The MNIST dataset contains grayscale images of handwritten digits, providing a well-structured dataset for image classification tasks. Here are some examples of images from the dataset:
