@@ -38,8 +38,8 @@ class MnistCNN(nn.Module):
             nn.Linear(128, 10),
         )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:  # noqa: D401
-        """Run a forward pass."""
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Perform a forward pass through the network."""
         return self.classifier(self.features(x))
 
 
